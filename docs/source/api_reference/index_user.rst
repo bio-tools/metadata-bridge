@@ -1,11 +1,6 @@
 User API reference
 ==================
 
-.. toctree::
-   :maxdepth: 2
-
-   diagrams_user
-
 .. automodapi:: bridge
    :no-inheritance-diagram:
    :no-main-docstr:

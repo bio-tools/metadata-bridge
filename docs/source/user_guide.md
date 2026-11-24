@@ -7,11 +7,15 @@ The bridge works in two directions:
 - **bio.tools → GitHub**: propose improvements to a GitHub repository based on its bio.tools entry,
   as a pull request (README badges, description, citation, license, topics, ...) and optionally issues.
 
-See [Installation](install.md) to get the `bridge` command, and set at least `GITHUB_TOKEN`
-(environment variable or `.env` file, see `.env.example`).
-It must be a **classic** GitHub token (starting with `ghp_`); fine-grained tokens are not accepted.
-Generating descriptions from READMEs with an LLM also needs `HUGGINGFACE_TOKEN`.
-The [Deployment guide](deployment_guide.md#configuration) lists the scopes each token needs.
+See [Installation](install.md) to get the `bridge` command
+and [Configuration](configuration.md) to set up your tokens.
+
+## How it works
+
+The command line, the REST API and the Python package all run the same steps:
+
+```{mermaid} api_reference/_process_diagrams/user_diagram.mmd
+```
 
 ## Command line
 
