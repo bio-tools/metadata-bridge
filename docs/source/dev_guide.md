@@ -59,10 +59,40 @@ You can also run the same checks manually (very much encouraged):
 poetry run poe [hook]
 ```
 
+## Set up your `.env` file
+
+The bridge reads its configuration from environment variables, or from a `.env` file in the directory you run it from.
+Copy the example file in the project root and fill in your tokens:
+
+```sh
+cp .env.example .env
+```
+
+`.env` is git-ignored, so your tokens stay local. Never commit it.
+
+| Variable            | Needed for                                                                                       | Where to get it                                                                                                                                                                  |
+|---------------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GITHUB_TOKEN`      | Calling the GitHub API, and forking, pushing, and opening PRs and issues (bio.tools → GitHub)   | A **classic** personal access token (it must start with `ghp_`) with the `public_repo` scope, or `repo` for private repositories: [create one](https://github.com/settings/tokens) |
+| `HUGGINGFACE_TOKEN` | Generating a description from the README with an LLM when a repository has none (GitHub → bio.tools) | A token (it must start with `hf_`) with permission to call Inference Providers: [create one](https://huggingface.co/settings/tokens)                                             |
+| `LOG_LEVEL`         | Optional, defaults to `INFO` (`DEBUG` is useful while developing)                                 |                                                                                                                                                                                  |
+
+The remaining variables (`GITHUB_API_URL`, `BIOTOOLS_API_URL`, `EUROPE_PMC_API_URL`, ...) are service endpoints.
+They default to the public instances and only need changing if you point the bridge at a different one,
+so you can leave them as they are in `.env.example`.
+
+A few things to know:
+
+- Run `bridge` from the project root, so it finds `.env`.
+  A variable that is set in your shell takes precedence over the same variable in `.env`.
+- Only use variable names from `.env.example`.
+  An unknown key in `.env` makes the bridge fail at startup with a validation error.
+- Settings are read once at startup, and the API's auto-reload only watches Python files,
+  so restart `bridge api` after editing `.env`.
+- The unit tests don't need a `.env` file or any tokens.
+
 ## Run locally
 
-Before running the API or CLI, make sure to set up the required environment variables.
-You can create a `.env` file in the project root based on the `.env.example` file.
+Before running the API or CLI, set up your `.env` file as described above.
 
 ### API
 
