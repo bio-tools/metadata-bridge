@@ -20,6 +20,3 @@ resulting in a GitHub pull request and, optionally, issues creation.
 *Internal pipeline components are abstracted to emphasize the user-level interaction and high-level data flow.*
 
 .. mermaid:: _process_diagrams/user_diagram.mmd
-
-TBD
-=====
