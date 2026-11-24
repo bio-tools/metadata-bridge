@@ -1,8 +1,8 @@
-bridge process diagrams (for GitHub ⇄ bio.tools)
-=================================================
+Process diagrams
+================
 
-General flow of the GitHub ⇄ bio.tools bridge
-----------------------------------------------
+General flow
+------------
 
 This sequence diagram illustrates the high-level runtime flow of the GitHub ⇄ bio.tools bridge.
 It shows how user input is handled by the interface, routed through the central handler, and executed

@@ -1,5 +1,5 @@
-user-facing bridge process diagrams (for GitHub ⇄ bio.tools)
-============================================================
+How the bridge is used
+======================
 
 The sequence diagram below shows how the bridge is invoked via the
 

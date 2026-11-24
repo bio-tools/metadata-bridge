@@ -13,6 +13,7 @@ Bidirectional bridge: GitHub ⇄ bio.tools
    user_guide
    deployment_guide
    dev_guide
+   changelog
    api_reference/index_user
    api_reference/index_dev
 

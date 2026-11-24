@@ -1,5 +1,5 @@
-Developer API Reference
-========================
+Developer API reference
+=======================
 
 .. toctree::
    :maxdepth: 2
