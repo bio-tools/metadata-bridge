@@ -36,6 +36,7 @@ extensions = [
     "sphinx.ext.autosummary",  # Generate summary tables for modules/classes/functions
     "sphinx_autodoc_typehints",  # Use type hints for function signatures
     "sphinx.ext.viewcode",  # Add links to highlighted source code,
+    "sphinx.ext.intersphinx",  # Link types to the Python and pydantic docs
     "myst_parser",  # Markdown parser
     "sphinx_automodapi.automodapi",  # Advanced autodoc for modules
     "sphinx_automodapi.smart_resolver",  # Better cross-referencing
@@ -79,6 +80,11 @@ autodoc_default_options = {
     "autodoc_member_order": "bysource",
 }
 
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "pydantic": ("https://pydantic.dev/docs/validation/latest", None),
+}
+
 suppress_warnings = []
 autodoc_warningiserror = False
 nitpicky = False
@@ -112,8 +118,9 @@ html_theme_options = {
     "repository_url": "https://github.com/bio-tools/metadata-bridge",
     "use_repository_button": True,
     "use_issues_button": True,
-    "use_edit_page_button": False,
-    "path_to_docs": "docs",
+    "use_edit_page_button": True,
+    "repository_branch": "dev",
+    "path_to_docs": "docs/source",
     "navigation_depth": 10,
 }
 
@@ -178,7 +185,31 @@ def run_apidoc(app, config=None):
     )
 
 
+# pages generated at build time (or included from elsewhere) have no source file to edit
+_PAGES_WITHOUT_SOURCE = ("_generated/", "api_reference/_apidoc_generated/", "changelog")
+
+
+def hide_edit_button_on_generated_pages(app, pagename, templatename, context, doctree):
+    """Hide the "Edit this page" button on pages that don't exist as files in docs/source."""
+    if not pagename.startswith(_PAGES_WITHOUT_SOURCE):
+        return
+
+    def without_edit(buttons):
+        kept = []
+        for button in buttons:
+            if "/edit/" in str(button.get("url", "")):
+                continue
+            if isinstance(button.get("buttons"), list):
+                button = {**button, "buttons": without_edit(button["buttons"])}
+            kept.append(button)
+        return kept
+
+    context["header_buttons"] = without_edit(context.get("header_buttons", []))
+
+
 def setup(app):
+    # runs after sphinx-book-theme adds its header buttons (priority 501)
+    app.connect("html-page-context", hide_edit_button_on_generated_pages, priority=600)
     app.connect("autodoc-skip-member", skip_enum_members)
     app.connect("autodoc-skip-member", skip_pydantic_internals)
     app.connect("config-inited", run_apidoc)
