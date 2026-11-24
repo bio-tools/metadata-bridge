@@ -51,8 +51,15 @@ def test_root_cli_version():
     assert result.stdout.strip() == f"metadata-bridge {__version__}"
 
 
-def test_root_cli_api_reload_can_be_disabled():
-    """`bridge api` accepts --no-reload (needed when running in containers)."""
-    result = runner.invoke(root_cli, ["api", "--help"])
+def test_root_cli_api_reload_can_be_disabled(monkeypatch):
+    """`bridge api --no-reload` starts uvicorn without hot reload (needed when running in containers)."""
+    calls = []
+    monkeypatch.setattr("bridge.__main__.uvicorn.run", lambda *args, **kwargs: calls.append(kwargs))
+
+    result = runner.invoke(root_cli, ["api", "--no-reload"])
     assert result.exit_code == 0
-    assert "--no-reload" in result.stdout
+    assert calls[0]["reload"] is False
+
+    result = runner.invoke(root_cli, ["api"])
+    assert result.exit_code == 0
+    assert calls[1]["reload"] is True
