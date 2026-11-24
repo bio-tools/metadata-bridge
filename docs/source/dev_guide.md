@@ -17,8 +17,8 @@ pipx install poetry
 Clone the repository and enter the project directory:
 
 ```sh
-git clone https://github.com/bio-tools/biohackathon2025.git
-cd biohackathon2025
+git clone https://github.com/bio-tools/metadata-bridge.git
+cd metadata-bridge
 ```
 
 ## Install dependencies
@@ -56,7 +56,7 @@ What happens automatically:
 You can also run the same checks manually (very much encouraged):
 
 ```bash
-poetry run [hook]
+poetry run poe [hook]
 ```
 
 ## Run locally
@@ -93,8 +93,10 @@ Various helper scripts are available under the `scripts/` directory.
 You can run them using Poetry:
 
 ```bash
-poetry run [script]
+poetry run poe [script]
 ```
+
+Run `poetry run poe` without arguments to list every available task.
 
 ## Documentation
 
@@ -108,7 +110,7 @@ There are two scripts relevant to documentation generation:
 You can run them using Poetry:
 
 ```bash
-poetry run [script]
+poetry run poe [script]
 ```
 
 The `gen-diagrams` script requires [D2](https://d2lang.com/) to be installed. 
@@ -148,4 +150,4 @@ poetry add --group docs [package]
 
 ## Contributing guidelines
 
-Please refer to the [CONTRIBUTING.md](https://github.com/bio-tools/biohackathon2025/blob/dev/CONTRIBUTING.md) file for guidelines on contributing to this project.
+Please refer to the [CONTRIBUTING.md](https://github.com/bio-tools/metadata-bridge/blob/dev/CONTRIBUTING.md) file for guidelines on contributing to this project.
