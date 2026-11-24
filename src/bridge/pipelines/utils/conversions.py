@@ -25,6 +25,7 @@ def find_matching_enum_member[E: Enum](
     case-insensitive matching on both member `.value` and `.name`.
 
     The input is matched against:
+
       1. `str(member.value)` (primary match target)
       2. `member.name` (fallback match target)
 
@@ -48,6 +49,7 @@ def find_matching_enum_member[E: Enum](
     -----
     - This function assumes Enum values are string-like or safely castable
       to `str`.
+
     - If multiple Enum members share the same normalized value, the first
       match in definition order is returned.
     """
@@ -125,21 +127,26 @@ def object_to_primitive(obj: Any) -> Any:
     Conversion rules
     ----------------
     - **Pydantic models**:
+
       - For v2 models, ``model_dump(mode="python", exclude_none=True)`` is used.
       - For v1 models, ``dict(exclude_none=True)`` is used.
       - The resulting dict is then processed recursively.
 
     - **Enum instances**:
+
       - Replaced with their ``.value``.
 
     - **Mappings / dicts**:
+
       - Keys are left as-is, values are passed through ``object_to_primitive``
         recursively.
 
     - **Iterables (list, tuple, set)**:
+
       - Converted to a ``list`` with each element converted recursively.
 
     - **Anything else**:
+
       - Returned unchanged, under the assumption that it is already a primitive
         type or is otherwise safely serializable.
 

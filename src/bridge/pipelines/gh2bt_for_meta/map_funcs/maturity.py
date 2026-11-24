@@ -49,6 +49,7 @@ def map_maturity(gh_schema: dict | None, bt_maturity: Maturity | None) -> Maturi
     Map GitHub repository signals to bio.tools maturity metadata.
 
     Policy:
+
     1. If the GitHub repository is archived, maturity is always set to
        ``Maturity.Legacy``, regardless of existing bio.tools values.
     2. Otherwise, a popularity score based on stars, forks,
@@ -65,6 +66,7 @@ def map_maturity(gh_schema: dict | None, bt_maturity: Maturity | None) -> Maturi
     gh_schema : dict[str, Any] | None
         GitHub repository metadata dictionary, or ``None`` if unavailable.
         Expected keys include:
+
         - 'archived'           : Boolean indicating if the repository is archived.
         - 'stargazers_count'   : Number of stars.
         - 'forks_count'        : Number of forks.

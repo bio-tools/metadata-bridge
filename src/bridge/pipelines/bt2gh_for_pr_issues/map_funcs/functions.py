@@ -132,6 +132,7 @@ def map_functions(gh_readme: str | None, bt_functions: list[FunctionItem] | None
     Propose a GitHub issue to add function annotations based on bio.tools metadata.
 
     Steps performed:
+
     1. Check if the README already mentions functions using the FUNCTION_PATTERN.
        If it does, no issue is needed.
     2. If no functions are found in bio.tools, no issue is needed.
@@ -179,6 +180,7 @@ def map_functions_to_readme(gh_readme: str | None, bt_functions: list[FunctionIt
     Propose an updated README content by adding function annotations from bio.tools metadata.
 
     Steps performed:
+
     1. Check if README exists; if not, no update is needed.
     2. Check if the README already mentions functions using the FUNCTION_PATTERN.
        If it does not, no update is needed.

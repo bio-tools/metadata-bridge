@@ -22,6 +22,7 @@ def canonicalize_shields_url(url: str) -> str:
     query parameter ordering.
 
     Behaviour:
+
     - If the URL does *not* contain `img.shields.io`, it is returned unchanged.
     - If it does, the query string is parsed, the `logo` parameter is removed
       (case-insensitive), and the remaining parameters are sorted
@@ -59,6 +60,7 @@ def canonicalize_url(url: str) -> str:
     for typical HTTP(S) URLs.
 
     Normalizations applied:
+
     - Lowercase the scheme and netloc (host + port).
     - Strip trailing slashes from the path, but ensure the path is at least "/".
     - Parse the query string into key/value pairs, sort them, and re-encode
@@ -101,12 +103,14 @@ def escape_shields_part(value: str) -> str:
     Shields' special syntax.
 
     Shields path semantics:
+
     - `-`  = segment separator
     - `--` = literal `-`
     - `_`  = space
     - `__` = literal `_`
 
     This function:
+
     - Converts `-` to `--`.
     - Converts `_` to `__`.
     - Percent-encodes anything else that needs escaping, but leaves `_`
@@ -134,6 +138,7 @@ def normalize_color(value: str) -> str:
     Normalize a color value by stripping a leading '#' and percent-encoding.
 
     Behaviour:
+
     - Coerces the value to a string and strips surrounding whitespace.
     - Removes a leading `#` if present.
     - Percent-encodes the remaining value with no safe characters.
@@ -165,6 +170,7 @@ def normalize_text(value: str | None, normalize_multiline: bool = True) -> str |
     or inclusion in metadata formats.
 
     Steps performed:
+
     1. Decode HTML entities (e.g. ``&lt;i&gt;`` → ``<i>``, ``&amp;`` → ``&``).
     2. Strip all remaining HTML tags (e.g. ``<i>name</i>`` → ``name``).
     3. Replace the box-drawing dash ``\u2500`` with a plain ASCII ``-``.
@@ -219,6 +225,7 @@ def _normalize_structure(obj: Any) -> Any:
     :func:`normalize_text` to all string-like values in nested structures.
 
     Supported types:
+
     - str / None: passed through `normalize_text`.
     - dict: keys left as-is, values normalized recursively.
     - list, tuple, set: elements normalized recursively, container type preserved.

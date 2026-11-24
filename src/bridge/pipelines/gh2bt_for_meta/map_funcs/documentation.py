@@ -187,6 +187,7 @@ def map_documentation(
 
     This function applies the documentation mapping policies for all
     supported GitHub documentation sources:
+
     - Repository wiki
     - Code of conduct
     - GitHub Pages site
@@ -199,6 +200,7 @@ def map_documentation(
     ----------
     gh_repo_data : dict[str, Any] | None
         GitHub repository metadata dictionary. Expected keys include:
+
         - ``"html_url"``
         - ``"has_wiki"``
         - ``"code_of_conduct"``

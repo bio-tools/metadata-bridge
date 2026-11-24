@@ -52,6 +52,7 @@ async def map_biotools_id(gh_name: str | None, bt_id: BiotoolsIdType | None) -> 
     Map and reconcile GitHub repository name to bio.tools ID.
 
     Policy:
+
     1. If no GitHub repo name is available, preserve existing bio.tools ID (even if None).
     2. If the existing bio.tools ID and GitHub repo name contain each other
        (case-insensitive), preserve the existing bio.tools ID.

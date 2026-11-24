@@ -32,6 +32,7 @@ def map_homepage(gh_schema: dict[str, AnyUrl | str | None], bt_homepage: UrlftpT
     gh_schema : dict[str, AnyUrl | str | None]
         GitHub repository metadata dictionary.
         Expected keys include:
+
         - 'homepage' : The homepage URL configured on GitHub (may be None).
         - 'html_url' : The GitHub repository URL (used as fallback).
     bt_homepage : UrlftpType | None

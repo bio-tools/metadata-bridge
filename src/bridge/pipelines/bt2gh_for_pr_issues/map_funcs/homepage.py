@@ -36,6 +36,7 @@ async def map_homepage(gh_schema: dict[AnyUrl | str | None], bt_homepage: Urlftp
     gh_schema : dict[AnyUrl | str | None]
         A dictionary containing existing GitHub repository data.
         Expected keys:
+
         - "homepage": the configured GitHub homepage URL, or None/empty if unset.
         - "html_url": the canonical GitHub repository URL.
     bt_homepage : UrlftpType | None

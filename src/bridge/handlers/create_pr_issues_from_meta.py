@@ -54,6 +54,7 @@ async def create_pr_issues_from_meta(schema: str, repo_type: str, **kwargs):
         Additional keyword arguments required by the composers, provider, and pipeline.
 
         For schema="biotools", repo_type="github":
+
         - owner: str - The owner of the repository where the PR will be created.
         - repo: str - The name of the repository where the PR will be created.
         - identifier: str - Identifier for the source metadata in bio.tools.

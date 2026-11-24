@@ -61,6 +61,7 @@ def map_publication(
     Map and reconcile GitHub CITATION.cff metadata and bio.tools publication entries.
 
     Policy:
+
     - If no CITATION.cff data is present, the existing bio.tools publication
       entries are unchanged.
     - If CITATION.cff data is present, its references are converted to

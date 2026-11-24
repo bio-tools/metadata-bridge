@@ -35,6 +35,7 @@ def reconcile_gh_over_bt(
     constructing concrete bio.tools values (``bt_value`` and the output).
 
     Policy:
+
     1. If ``gh_norm`` is ``None``, GitHub is treated as silent and the existing
        bio.tools value (``bt_value``) is preserved. An "unchanged" log entry is
        emitted.

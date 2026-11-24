@@ -26,6 +26,7 @@ async def map_name(gh_name: str | None, bt_params: dict[str, str | None] | None)
     bt_params : dict[str, str | None] | None
         A dictionary containing existing bio.tools metadata parameters.
         Expected keys:
+
         - ``"name"``       : bio.tools name
         - ``"biotoolsID"`` : bio.tools ID
 

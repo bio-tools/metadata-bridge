@@ -33,6 +33,7 @@ async def extract_meta_from_repo(schema: str, repo_type: str, **kwargs) -> str:
         Additional keyword arguments required by the composers and pipeline.
 
         For schema="biotools", repo_type="github":
+
         - owner: str - The owner of the source repository.
         - repo: str - The name of the source repository.
         - identifier: str | None - Optional identifier for existing metadata in bio.tools.
