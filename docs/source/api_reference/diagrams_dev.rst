@@ -29,67 +29,6 @@ to a bio.tools tool metadata.
 .. mermaid:: _process_diagrams/gh2bt.mmd
 
 
-GitHub → bio.tools mapping
-----------------------------
-
-The flowcharts below detail the mapping of specific fields from GitHub to bio.tools.
-
-Map description
-~~~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/description.mmd
-
-Map version
-~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/version.mmd
-
-Map maturity
-~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/maturity.mmd
-
-Map publications
-~~~~~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/publication.mmd
-
-Map documentation
-~~~~~~~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/documentation.mmd
-
-Map biotools ID
-~~~~~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/biotools_id.mmd
-
-Map name
-~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/name.mmd
-
-Map homepage
-~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/homepage.mmd
-
-Map language
-~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/language.mmd
-
-Map license
-~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/license.mmd
-
-Policy: GitHub over bio.tools
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/gh2bt/policy-gh-over-bt.mmd
-
-
 bio.tools → GitHub pipeline
 ----------------------------
 
@@ -100,59 +39,16 @@ issues.
 .. mermaid:: _process_diagrams/bt2gh.mmd
 
 
-bio.tools → GitHub mapping for issues
----------------------------------------
+Reconciliation policies
+------------------------
 
-The flowcharts below detail the mapping of specific fields from bio.tools to GitHub
-in the form of issues.
+The flowcharts below show how a mapped value is combined with the value already present
+on the other side. They are generic and shared by many of the field-specific map functions.
 
-Map description
-~~~~~~~~~~~~~~~~~~
+Policy: GitHub over bio.tools
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. mermaid:: _process_diagrams/bt2gh/description.mmd
-
-Map homepage
-~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/bt2gh/homepage.mmd
-
-Map topics
-~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/bt2gh/topics.mmd
-
-Map version
-~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/bt2gh/version.mmd
-
-
-bio.tools → GitHub mapping for pull requests
----------------------------------------------
-
-The flowcharts below detail the mapping of specific fields from bio.tools to GitHub
-in the form of pull requests.
-
-Map name
-~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/bt2gh/name.mmd
-
-Map license
-~~~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/bt2gh/license.mmd
-
-Map citation
-~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/bt2gh/citation.mmd
-
-Map readme
-~~~~~~~~~~~~~~
-
-.. mermaid:: _process_diagrams/bt2gh/readme.mmd
-
+.. mermaid:: _process_diagrams/gh2bt/policy-gh-over-bt.mmd
 
 Policy: bio.tools over GitHub
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

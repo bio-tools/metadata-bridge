@@ -40,7 +40,7 @@ sequenceDiagram
         bt2gh-)mapper: call map function
         activate map_item
         mapper-)map_item: run()<br/>{bio.tools relevant fields, GitHub relevant fields}
-        note over map_item: REF perform bio.tools → GitHub mapping for issues
+        note over map_item: field-specific map function for issues<br/>(bt2gh_for_pr_issues.map_funcs)
         map_item-->>bt2gh: new issue info (if needed)
         deactivate map_item
     end
@@ -51,7 +51,7 @@ sequenceDiagram
         bt2gh-)mapper: call map function
         activate map_item
         mapper-)map_item: run()<br/>{bio.tools relevant fields, GitHub relevant fields}
-        note over map_item: REF perform bio.tools → GitHub mapping for file changes
+        note over map_item: field-specific map function for file changes<br/>(bt2gh_for_pr_issues.map_funcs)
         map_item-->>bt2gh: new/changed file info (if needed)
         deactivate map_item
     end

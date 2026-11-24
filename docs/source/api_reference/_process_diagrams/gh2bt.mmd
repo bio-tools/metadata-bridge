@@ -37,7 +37,7 @@ sequenceDiagram
         gh2bt-)mapper: call map function
         activate map_item
         mapper-)map_item: run()<br/>{bio.tools relevant fields, GitHub relevant fields}
-        note over map_item: REF GitHub → bio.tools mapping
+        note over map_item: field-specific map function<br/>(gh2bt_for_meta.map_funcs)
         map_item-->>gh2bt: mapped metadata entry
         deactivate map_item
     end
