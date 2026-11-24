@@ -128,6 +128,35 @@ poetry run poe [script]
 
 Run `poetry run poe` without arguments to list every available task.
 
+## Run the tests
+
+The unit tests live in `tests/unit` and run with pytest:
+
+```bash
+poetry run pytest
+```
+
+They don't need a `.env` file or any tokens.
+CI runs the same tests with a coverage report on every PR (see [CONTRIBUTING.md](https://github.com/bio-tools/metadata-bridge/blob/dev/CONTRIBUTING.md)).
+
+Two tasks give a closer look at test quality:
+
+| task                | description                                                                                       |
+|---------------------|---------------------------------------------------------------------------------------------------|
+| `coverage-report`   | Runs the tests with coverage, writes an HTML report to `htmlcov/` and opens it in your browser    |
+| `cosmic-ray-report` | Runs [Cosmic Ray](https://cosmic-ray.readthedocs.io/) mutation testing and writes an HTML report |
+
+```bash
+poetry run poe coverage-report
+poetry run poe cosmic-ray-report
+```
+
+Mutation testing makes small changes to the code and checks that some test fails for each one,
+which shows where the tests don't really check behaviour.
+It reruns the test suite for every mutation, so it takes a while.
+Locally it uses `cosmic-ray.local.toml` and writes `cosmic-ray-report-local.html`;
+with the `CI` environment variable set it uses `cosmic-ray.ci.toml` instead.
+
 ## Documentation
 
 There are two scripts relevant to documentation generation:
