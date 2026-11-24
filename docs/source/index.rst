@@ -3,7 +3,7 @@
 Bidirectional bridge: GitHub ⇄ bio.tools
 ==========================================
 
-*Started as project 5 at the ELIXIR BioHackathon Europe 2025.*
+*This project started at the ELIXIR BioHackathon Europe 2025* (`original repository <https://github.com/bio-tools/biohackathon2025>`_).
 
 .. toctree::
    :maxdepth: 1

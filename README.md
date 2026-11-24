@@ -19,9 +19,8 @@ but the architecture is intentionally pluggable for more backends later.
 - Improves repository visibility and discoverability.
 - Closes the loop: metadata is useful in both directions.
 
-**Origin**: 
-this tool started as [project 5](https://github.com/elixir-europe/biohackathon-projects-2025/blob/main/5.md) 
-at the ELIXIR BioHackathon Europe 2025 
+**Origin**:
+this project started at the ELIXIR BioHackathon Europe 2025
 ([original repository](https://github.com/bio-tools/biohackathon2025)).
 
 ---
