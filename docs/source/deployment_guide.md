@@ -14,6 +14,16 @@ See `.env.example` in the repository for the full list. The most important ones:
 | `HUGGINGFACE_TOKEN` | LLM-generated descriptions (GitHub → bio.tools)      |
 | `LOG_LEVEL`         | Optional, defaults to `INFO`                         |
 
+`GITHUB_TOKEN` must be a **classic** personal access token (starting with `ghp_`);
+fine-grained tokens (`github_pat_...`) are rejected with "Invalid GitHub token format".
+Give it the `public_repo` scope, or `repo` to work with private repositories,
+and [create it here](https://github.com/settings/tokens).
+The bridge forks repositories into the account that owns the token,
+so for a shared service consider a dedicated bot account.
+
+`HUGGINGFACE_TOKEN` must start with `hf_` and needs permission to call Inference Providers
+([create one here](https://huggingface.co/settings/tokens)).
+
 The service endpoints (`GITHUB_API_URL`, `BIOTOOLS_API_URL`, ...) have sensible defaults and
 only need to be set to point at a different instance.
 

@@ -9,7 +9,9 @@ The bridge works in two directions:
 
 See [Installation](install.md) to get the `bridge` command, and set at least `GITHUB_TOKEN`
 (environment variable or `.env` file, see `.env.example`).
+It must be a **classic** GitHub token (starting with `ghp_`); fine-grained tokens are not accepted.
 Generating descriptions from READMEs with an LLM also needs `HUGGINGFACE_TOKEN`.
+The [Deployment guide](deployment_guide.md#configuration) lists the scopes each token needs.
 
 ## Command line
 

@@ -44,6 +44,8 @@ bridge --help
 
 Set `GITHUB_TOKEN` (and `HUGGINGFACE_TOKEN` for LLM-generated descriptions) in your environment or a `.env` file;
 see [`.env.example`](https://github.com/bio-tools/metadata-bridge/blob/dev/.env.example).
+`GITHUB_TOKEN` must be a classic personal access token (starting with `ghp_`);
+see the [configuration section](https://bio-tools.github.io/metadata-bridge/deployment_guide.html#configuration) for the scopes it needs.
 A Docker image setup is described in the [Deployment guide](https://bio-tools.github.io/metadata-bridge/deployment_guide.html).
 
 ```bash
