@@ -145,6 +145,13 @@ poetry run poe [script]
 
 The `gen-diagrams` script requires [D2](https://d2lang.com/) to be installed. 
 You can install it by following their [instructions](https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md).
+Run it before `gen-docs`, since the API reference includes the diagrams it generates.
+
+`gen-docs` treats Sphinx warnings as errors: it lists all of them and then fails, both locally and in CI.
+Most warnings come from docstrings, for example a list without a blank line before it.
+
+The process diagrams are [Mermaid](https://mermaid.js.org/) files in `docs/source/api_reference/_process_diagrams/`.
+They are rendered in the browser, so editing the `.mmd` file is all it takes to update one.
 
 To view the documentation locally, run:
 

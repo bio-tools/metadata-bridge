@@ -36,9 +36,13 @@ def build_docs():
         str(SOURCE_DIR),
         str(DOCS_DIR / "build"),
         "-q",
+        "-W",  # treat warnings as errors, so they get fixed instead of piling up
+        "--keep-going",  # but report all of them before failing
     ]
     print(f"Building HTML: {' '.join(build_cmd)}")
-    subprocess.run(build_cmd, check=True, stderr=subprocess.DEVNULL)
+    result = subprocess.run(build_cmd)
+    if result.returncode != 0:
+        sys.exit("Docs build failed, see the warnings above.")
     print("Docs built successfully.")
 
 
