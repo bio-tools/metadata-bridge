@@ -84,6 +84,5 @@ gen-biotools-models = { script = "scripts.gen_models:generate_biotools_models", 
 gen-github-models = { script = "scripts.gen_models:generate_github_models", help = "Regenerate GitHub models" }
 gen-docs = { script = "scripts.gen_docs:main", help = "Build Sphinx docs" }
 gen-diagrams = { script = "scripts.gen_diagrams:main", help = "Generate architecture diagrams" }
-gen-process-diagrams = { script = "scripts.gen_process_diagrams:main", help = "Generate process diagrams" }
 
 
