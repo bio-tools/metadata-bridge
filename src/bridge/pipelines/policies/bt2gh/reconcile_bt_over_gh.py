@@ -37,6 +37,7 @@ async def reconcile_bt_over_gh(
     payload constructed from the bio.tools value when applicable.
 
     Policy:
+
     1. If ``bt_norm`` is ``None``, bio.tools is treated as silent and no
        issue/pr is proposed. An "unchanged" log entry is emitted.
     2. If ``gh_norm`` is not ``None`` and equals ``bt_norm``, the values

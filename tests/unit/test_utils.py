@@ -5,6 +5,8 @@ These tests verify that the require_args decorator enforces required keyword
 arguments for asynchronous functions.
 """
 
+import inspect
+
 import pytest
 
 from bridge.utils import require_args
@@ -47,3 +49,25 @@ async def test_require_args_missing():
 
     with pytest.raises(ValueError, match="Missing required args: a"):
         await fn()
+
+
+def test_require_args_keeps_name_docstring_and_signature():
+    """The decorated function keeps its metadata, so the API docs show the real signature."""
+
+    @require_args("a")
+    async def fn(a: int, b: int = 2, **kwargs) -> int:
+        """Add things."""
+        return a + b
+
+    assert fn.__name__ == "fn"
+    assert fn.__doc__ == "Add things."
+    assert list(inspect.signature(fn).parameters) == ["a", "b", "kwargs"]
+
+
+def test_public_handlers_expose_their_docstrings():
+    """`bridge.extract_meta_from_repo` and friends aren't hidden behind the decorator."""
+    import bridge
+
+    for fn in (bridge.extract_meta_from_repo, bridge.create_pr_issues_from_meta):
+        assert fn.__doc__ and "Parameters" in fn.__doc__
+        assert "schema" in str(inspect.signature(fn))

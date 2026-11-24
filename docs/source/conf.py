@@ -36,6 +36,7 @@ extensions = [
     "sphinx.ext.autosummary",  # Generate summary tables for modules/classes/functions
     "sphinx_autodoc_typehints",  # Use type hints for function signatures
     "sphinx.ext.viewcode",  # Add links to highlighted source code,
+    "sphinx.ext.intersphinx",  # Link types to the Python and pydantic docs
     "myst_parser",  # Markdown parser
     "sphinx_automodapi.automodapi",  # Advanced autodoc for modules
     "sphinx_automodapi.smart_resolver",  # Better cross-referencing
@@ -43,6 +44,7 @@ extensions = [
 ]
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
+myst_heading_anchors = 3  # lets Markdown pages link to headings, e.g. deployment_guide.md#docker
 myst_enable_extensions = [
     "dollarmath",  # Enables $...$ syntax
     "amsmath",  # Enables LaTeX-style math blocks with \[ \] and environments
@@ -78,14 +80,12 @@ autodoc_default_options = {
     "autodoc_member_order": "bysource",
 }
 
-suppress_warnings = [
-    "autodoc.duplicate_object",
-    "autosummary",
-    "toc.not_included",
-    "ref",
-    "misc",
-    "myst",
-]
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "pydantic": ("https://pydantic.dev/docs/validation/latest", None),
+}
+
+suppress_warnings = []
 autodoc_warningiserror = False
 nitpicky = False
 
@@ -96,6 +96,7 @@ napoleon_attr_annotations = False  # Merge type hints into the same table
 
 autodoc_class_signature = "mixed"
 autosummary_generate = True
+autosummary_generate_overwrite = False  # keep the apidoc pages instead of replacing them with stubs
 automodapi_toctreedirnm = "_generated"
 autosummary_imported_members = False
 autodoc_typehints = "description"
@@ -112,14 +113,14 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "sphinx_book_theme"
-html_static_path = ["_static"]
 
 html_theme_options = {
     "repository_url": "https://github.com/bio-tools/metadata-bridge",
     "use_repository_button": True,
     "use_issues_button": True,
-    "use_edit_page_button": False,
-    "path_to_docs": "docs",
+    "use_edit_page_button": True,
+    "repository_branch": "dev",
+    "path_to_docs": "docs/source",
     "navigation_depth": 10,
 }
 
@@ -149,7 +150,8 @@ def skip_pydantic_internals(app, what, name, obj, skip, options):
     return skip
 
 
-def run_apidoc(app):
+def run_apidoc(app, config=None):
+    """Generate the developer API pages before Sphinx collects source files, so automodapi sees them."""
     import sphinx.ext.apidoc as apidoc
     import shutil
 
@@ -178,11 +180,36 @@ def run_apidoc(app):
             "--separate",
             "--module-first",
             "--implicit-namespaces",
+            "--no-toc",  # index_dev.rst links the package pages; no extra modules.rst
         ]
     )
 
 
+# pages generated at build time (or included from elsewhere) have no source file to edit
+_PAGES_WITHOUT_SOURCE = ("_generated/", "api_reference/_apidoc_generated/", "changelog")
+
+
+def hide_edit_button_on_generated_pages(app, pagename, templatename, context, doctree):
+    """Hide the "Edit this page" button on pages that don't exist as files in docs/source."""
+    if not pagename.startswith(_PAGES_WITHOUT_SOURCE):
+        return
+
+    def without_edit(buttons):
+        kept = []
+        for button in buttons:
+            if "/edit/" in str(button.get("url", "")):
+                continue
+            if isinstance(button.get("buttons"), list):
+                button = {**button, "buttons": without_edit(button["buttons"])}
+            kept.append(button)
+        return kept
+
+    context["header_buttons"] = without_edit(context.get("header_buttons", []))
+
+
 def setup(app):
+    # runs after sphinx-book-theme adds its header buttons (priority 501)
+    app.connect("html-page-context", hide_edit_button_on_generated_pages, priority=600)
     app.connect("autodoc-skip-member", skip_enum_members)
     app.connect("autodoc-skip-member", skip_pydantic_internals)
-    app.connect("builder-inited", run_apidoc)
+    app.connect("config-inited", run_apidoc)

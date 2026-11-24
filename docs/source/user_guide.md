@@ -7,9 +7,15 @@ The bridge works in two directions:
 - **bio.tools → GitHub**: propose improvements to a GitHub repository based on its bio.tools entry,
   as a pull request (README badges, description, citation, license, topics, ...) and optionally issues.
 
-See [Installation](install.md) to get the `bridge` command, and set at least `GITHUB_TOKEN`
-(environment variable or `.env` file, see `.env.example`).
-Generating descriptions from READMEs with an LLM also needs `HUGGINGFACE_TOKEN`.
+See [Installation](install.md) to get the `bridge` command
+and [Configuration](configuration.md) to set up your tokens.
+
+## How it works
+
+The command line, the REST API and the Python package all run the same steps:
+
+```{mermaid} api_reference/_process_diagrams/user_diagram.mmd
+```
 
 ## Command line
 
@@ -52,10 +58,75 @@ curl -X POST http://localhost:8000/github-to-biotools \
 
 ## Python
 
-The same operations are available from Python:
+The same operations are available from Python.
+Both functions are async, take the metadata schema and repository type,
+and the rest as keyword arguments:
 
 ```python
-from bridge import extract_meta_from_repo, create_pr_issues_from_meta
+import asyncio
+
+from bridge import create_pr_issues_from_meta, extract_meta_from_repo
+
+# GitHub → bio.tools: returns the bio.tools metadata as a JSON string
+metadata_json = asyncio.run(
+    extract_meta_from_repo(
+        schema="biotools",
+        repo_type="github",
+        owner="OWNER",
+        repo="REPO",
+        identifier=None,  # or an existing bio.tools ID
+    )
+)
+
+# bio.tools → GitHub: returns {"pr": {...}, "issues": [...]} for whatever was created
+result = asyncio.run(
+    create_pr_issues_from_meta(
+        schema="biotools",
+        repo_type="github",
+        identifier="BIOTOOLS_ID",
+        owner="OWNER",
+        repo="REPO",
+        allow_issues=True,
+    )
+)
 ```
 
-See the [API reference](api_reference/index_user) for their signatures.
+See the [API reference](api_reference/index_user) for the full signatures.
+
+## What gets mapped
+
+### GitHub → bio.tools
+
+| bio.tools field  | Taken from GitHub                                                                       |
+|------------------|-----------------------------------------------------------------------------------------|
+| `biotoolsID`     | Repository name, adjusted to be unique on bio.tools                                     |
+| `name`           | Repository name                                                                         |
+| `description`    | Repository description, or generated from the README with an LLM when there is none     |
+| `homepage`       | Repository homepage, falling back to the repository URL                                 |
+| `link`           | Repository URL                                                                          |
+| `documentation`  | Wiki, GitHub Pages and code of conduct                                                  |
+| `language`       | Repository languages                                                                    |
+| `license`        | Detected license                                                                        |
+| `version`        | Latest release tag                                                                      |
+| `maturity`       | Archived status, stars, forks and watchers                                              |
+| `publication`    | References in `CITATION.cff`                                                            |
+| `topic`          | Repository topics, matched to EDAM topics                                               |
+| `function`       | Function annotations in the README                                                      |
+
+When you pass an existing bio.tools ID, its record is the starting point,
+and values already in bio.tools are kept wherever GitHub has nothing to add.
+
+### bio.tools → GitHub
+
+Changes that can be made as files are proposed in **one pull request**:
+
+| File           | What changes                                                                         |
+|----------------|--------------------------------------------------------------------------------------|
+| `README.md`    | Adds bio.tools, bridge and tool-type badges; the rest of the README is kept as is    |
+| `CITATION.cff` | Created or extended from the bio.tools publications                                  |
+| `LICENSE.txt`  | The full SPDX text of the bio.tools license, when GitHub has none or a different one |
+
+Other differences are opened as **issues** instead (only with `--allow-issues`),
+since most of them are repository settings that a pull request can't change:
+name, description, homepage, topics (from EDAM topics and operations), version (release tags)
+and function annotations in the README.

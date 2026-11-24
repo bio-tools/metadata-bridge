@@ -5,17 +5,7 @@ For local development, see the [Developer guide](dev_guide.md) instead.
 
 ## Configuration
 
-All settings come from environment variables (or a `.env` file in the working directory).
-See `.env.example` in the repository for the full list. The most important ones:
-
-| Variable            | Required for                                         |
-|---------------------|------------------------------------------------------|
-| `GITHUB_TOKEN`      | GitHub API calls, cloning repos, creating PRs/issues |
-| `HUGGINGFACE_TOKEN` | LLM-generated descriptions (GitHub → bio.tools)      |
-| `LOG_LEVEL`         | Optional, defaults to `INFO`                         |
-
-The service endpoints (`GITHUB_API_URL`, `BIOTOOLS_API_URL`, ...) have sensible defaults and
-only need to be set to point at a different instance.
+Set at least `GITHUB_TOKEN`, as described in [Configuration](configuration.md).
 
 ## Docker
 

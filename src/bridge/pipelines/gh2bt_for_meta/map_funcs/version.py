@@ -25,6 +25,7 @@ def map_version(gh_latest_version_tag: str | None, bt_versions: list[VersionType
     list is reset to contain only the GitHub version.
 
     Policy:
+
     1. If GitHub provides no latest tag, existing bio.tools versions are preserved.
     2. If bio.tools has no versions, the GitHub version is adopted.
     3. If the GitHub version is already present, no change is made.

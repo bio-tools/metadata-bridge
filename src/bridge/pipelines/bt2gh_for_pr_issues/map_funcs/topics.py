@@ -67,6 +67,7 @@ def _flatten_function(function: list[FunctionItem]) -> list[str]:
     Flatten bio.tools function annotations for operation, input, and output.
 
     Relevant terms:
+
     - topic[].term
     - function[].operation[].term
     - function[].input[].data.term
@@ -125,6 +126,7 @@ def map_topics(gh_topics: list[str] | None, bt_edam: dict[str, any] | None) -> d
     bt_edam : dict[str, Any] | None
         EDAM-related metadata from bio.tools.
         Expected keys include:
+
         - "topics"    : list[TopicItem]
         - "functions" : list[FunctionItem]
 

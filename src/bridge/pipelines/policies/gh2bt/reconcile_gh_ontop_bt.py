@@ -38,6 +38,7 @@ async def reconcile_gh_ontop_bt(
     the subset of GitHub values that are missing from bio.tools.
 
     Policy:
+
     1. If ``gh_norm`` is ``None`` or empty,
         GitHub is treated as silent and no change is made to bio.tools.
         An "unchanged" log entry is emitted.

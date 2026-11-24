@@ -22,21 +22,22 @@ def map_license(gh_license: str | None, bt_license: License | None) -> License |
     GitHub-over-bio.tools policy.
 
     - If GitHub provides a license but it is not recognized as a valid SPDX ID, and there is no existing
-    bio.tools license to fall back on, this function will log a note and return `License.Other`.
+      bio.tools license to fall back on, this function will log a note and return `License.Other`.
+
     - If GitHub provides no license and there is no existing bio.tools license, this function will
-    return `License.Not_licensed`.
+      return `License.Not_licensed`.
 
     Parameters
     ----------
     gh_license : str | None
         Github repository license (SPDX ID), or ``None`` if no license is configured.
-    bt_license : License | None
+    bt_license : bridge.core.biotools.License | None
         Existing bio.tools license annotation, or ``None`` if no license
         is currently recorded.
 
     Returns
     -------
-    License | None
+    bridge.core.biotools.License | None
         The reconciled license as a `License` enum member, or ``None`` if
         neither GitHub nor bio.tools provides a usable license.
     """

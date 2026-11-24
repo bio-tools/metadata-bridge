@@ -22,18 +22,12 @@ bridge --version
 bridge --help
 ```
 
+Then set up your tokens as described in [Configuration](configuration.md).
+
 ## With Docker
 
 See the [Deployment guide](deployment_guide.md#docker).
 
 ## From source
 
-For development, clone the repository and install it with [Poetry](https://python-poetry.org/docs/#installation):
-
-```sh
-git clone https://github.com/bio-tools/metadata-bridge.git
-cd metadata-bridge
-poetry install
-```
-
-The [Developer guide](dev_guide.md) covers the rest of the development setup.
+To work on the bridge itself, follow the [Developer guide](dev_guide.md).

@@ -65,6 +65,7 @@ def _choose_preferred_citation(
     Select the preferred citation among all available references.
 
     Precedence rules:
+
     1. If the existing GitHub CITATION.cff contains a `preferred-citation`,
        it is preserved and returned unchanged.
     2. Otherwise, if there are primary publications in the bio.tools metadata,
@@ -109,6 +110,7 @@ def _compose_base_cff(bt_params: dict[str, Any]) -> dict[str, Any]:
     bt_params : dict[str, Any]
         The bio.tools tool metadata as a dictionary.
         Expected keys include:
+
         - 'name'       : Name of the tool.
         - 'biotoolsID' : bio.tools identifier of the tool.
         - 'homepage'   : Homepage or repository URL of the tool.
@@ -153,6 +155,7 @@ def _merge_top_level_metadata(
     Merge top-level metadata from an existing CITATION.cff with bio.tools metadata.
 
     Policy:
+
     - If no existing CITATION.cff is provided, `base_cff` is returned as-is.
     - Otherwise, start from the existing CFF.
     - For keys present in `base_cff`:
@@ -211,6 +214,7 @@ def _compose_citation(
     written to `CITATION.cff`.
 
     Behaviour:
+
     - If no references are provided, a minimal CFF file is created with a
       generic citation message.
     - If references exist, they are added as a `references` list, and a
@@ -255,6 +259,7 @@ async def map_citation(gh_citation_cff: dict[str, Any], bt_params: dict[str, Any
     Generate or update a CITATION.cff file based on bio.tools and Europe PMC metadata.
 
     Steps performed:
+
     1. Reads publication metadata from a bio.tools tool entry.
     2. Resolves each publication via the Europe PMC API to obtain
        bibliographic metadata.
@@ -275,6 +280,7 @@ async def map_citation(gh_citation_cff: dict[str, Any], bt_params: dict[str, Any
     bt_params : dict[str, Any]
         The bio.tools tool metadata as a dictionary.
         Expected keys include:
+
         - 'publication' : list of publication items from bio.tools metadata.
         - 'name'        : name of the tool.
         - 'biotoolsID'  : bio.tools identifier.

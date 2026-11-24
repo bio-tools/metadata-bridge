@@ -1,15 +1,12 @@
 # Contributing guidelines
 
-See the [Developer guide](https://bio-tools.github.io/metadata-bridge/dev_guide.html) in docs for details on setup, running API/CLI, docs preview, and local tooling.
+See the [Developer guide](https://bio-tools.github.io/metadata-bridge/dev_guide.html) for setup, running the API/CLI, tests and docs.
 
 ## Ground rules
 
-- Python ≥ 3.12 
-- Package manager: [Poetry](https://python-poetry.org/docs/#installation)
-- Style/Lint: Ruff + Black (configured in `pyproject.toml`)
 - One clear purpose per PR: small, reviewable diffs
 - No secrets in code: use env vars / `.env` locally; CI secrets are restricted
-- Never edit auto-generated files by hand
+- Never edit auto-generated files by hand (see [Generated code](#generated-code))
 
 ## Branching & PRs
 
@@ -37,9 +34,10 @@ We keep two permanent branches and short-lived topic branches.
 
 ### Release flow
 
-1. When `dev` is stable and ready for release, create a PR from `dev` to `main`.
-2. After review and approval, merge (squash or merge commit) the PR and tag `vX.Y.Z`.
-3. Back-merge `main` into `dev` to keep it up to date.
+1. Bump the version with `poetry version <patch|minor|major>` and update `CHANGELOG.md` on `dev`.
+2. Open a PR from `dev` to `main`; after review, merge it (squash or merge commit).
+3. Tag `main` with `vX.Y.Z` and push the tag: the release workflow publishes to PyPI and creates the GitHub release.
+4. Back-merge `main` into `dev`.
 
 ### Rebasing & merges
 
@@ -58,8 +56,9 @@ We keep two permanent branches and short-lived topic branches.
 
 | Topic      | Standard                                        |
 |------------|-------------------------------------------------|
-| Lint       | Ruff ([tool.ruff])                              |
-| Format     | Black (line length 120)                         |
+| Python     | ≥ 3.12                                          |
+| Lint       | Ruff (`ruff.toml`)                              |
+| Format     | Black (`black.toml`, line length 120)           |
 | Imports    | Ruff isort (first party = `bridge`)             |
 | Docstrings | Required top-level docstring per package/module |
 | Style      | NumPy                                           |
@@ -68,50 +67,26 @@ We keep two permanent branches and short-lived topic branches.
 
 ## Generated code
 
-| File                                                                   | Purpose                                        | How to regenerate                |
-|------------------------------------------------------------------------|------------------------------------------------|----------------------------------|
-| `bridge/core/biotools.py`                                              | Pydantic models from bio.tools JSON            | `poetry run poe gen-biotools-models` |
-| `bridge/core/github_repo.py` and `bridge/core/github_latest_release.py`| Pydantic models from github response JSONs ([repo](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository) & [latest release](https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#get-the-latest-release)) | `poetry run poe gen-github-models` |
+| File                                                                           | Generated from                                                                                                                                                                                       | Regenerate with           |
+|--------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
+| `src/bridge/core/biotools.py`                                                  | The bio.tools JSON Schema                                                                                                                                                                            | `poe gen-biotools-models` |
+| `src/bridge/core/github_repo.py`, `src/bridge/core/github_latest_release.py`   | GitHub's [repo](https://docs.github.com/en/rest/repos/repos#get-a-repository) and [latest release](https://docs.github.com/en/rest/releases/releases#get-the-latest-release) response schemas | `poe gen-github-models`   |
 
-- Never edit generated files directly.
-- If schema or generator changes: regenerate and commit.
-
+If a schema or generator changes, regenerate and commit the result.
 
 ## CI behavior
 
-### Build & Deploy Docs (`docs.yml`):
+| Workflow                                 | Runs on                                        | Does                                                                                 |
+|------------------------------------------|------------------------------------------------|--------------------------------------------------------------------------------------|
+| Lint & unit tests (`tests.yml`)          | PRs, pushes to `dev`/`main`                    | `poe lint`, then `pytest` with coverage                                              |
+| Build & Deploy Docs (`docs.yml`)         | PRs, pushes to `dev`/`main`, manual            | `poe gen-diagrams` + `poe gen-docs`; deploys to GitHub Pages only from the deploy branch |
+| Release (`release.yml`)                  | `vX.Y.Z` tags                                  | Checks the tag matches `pyproject.toml`, builds, publishes to PyPI, creates a GitHub release |
+| Dependabot                               | Weekly                                         | Grouped update PRs for Python dependencies and GitHub Actions, targeting `dev`       |
 
-On every PR and push to `dev`/`main`,
-CI installs deps, generates architecture diagrams (`poe gen-diagrams`), and builds Sphinx (`poe gen-docs`),
-so broken docs are caught in review. PRs never deploy.
-
-Pushes to the deploy branch publish the docs to GitHub Pages.
-The deploy branch is set by the `DOCS_DEPLOY_BRANCH` repository variable (Settings → Secrets and variables → Actions → Variables),
-and defaults to `dev`. Set it to `main` once releases are cut from `main`.
-Do not commit built docs or diagrams.
-
-| Event                         | Branch           | Build                                                                                            | Deploy to Pages |
-|-------------------------------|------------------|--------------------------------------------------------------------------------------------------|-----------------|
-| PR                            | `dev` / `main`   | Install deps (--with docs) + install D2 → `poetry run poe gen-diagrams` → `poetry run poe gen-docs` | No              |
-| push / workflow_dispatch      | deploy branch    | Same                                                                                             | Yes             |
-| push / workflow_dispatch      | any other branch | Same                                                                                             | No              |
-
-### Lint & unit tests (`tests.yml`):
-
-Runs on every PR and on pushes to `dev` and `main`: `poetry run poe lint`, then `pytest` with coverage.
-
-### Release (`release.yml`):
-
-Runs when a `vX.Y.Z` tag is pushed. It checks the tag matches the version in `pyproject.toml`,
-builds the sdist and wheel, publishes them to PyPI (trusted publishing, `pypi` environment),
-and creates a GitHub release with generated notes.
-
-To release: bump the version with `poetry version <patch|minor|major>`, update `CHANGELOG.md`,
-merge `dev` → `main`, then tag `main` with `vX.Y.Z` and push the tag.
-
-### Dependabot
-
-Weekly grouped update PRs for Python dependencies and GitHub Actions, targeting `dev`.
+The docs deploy branch is the `DOCS_DEPLOY_BRANCH` repository variable
+(Settings → Secrets and variables → Actions → Variables), defaulting to `dev`. PRs never deploy.
+Publishing to PyPI uses trusted publishing through the `pypi` environment.
+Don't commit built docs or diagrams.
 
 
 ## Design boundaries
@@ -136,8 +111,3 @@ Use clear, action-oriented subjects. Conventional commits encouraged.
 | `fix: handle 422 from GitHub PR API`                  | `fix stuff`   |
 | `feat: add CLI command to extract metadata from repo` | `add code`    |
 | `docs: update contributing guidelines`                | `update docs` |
-
-
-
-
-

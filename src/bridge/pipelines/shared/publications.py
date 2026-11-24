@@ -17,11 +17,13 @@ def ref_ids(ref: Publication | PublicationItem | Mapping[str, Any]) -> set[str]:
     them as normalized strings, which can then be used for deduplication.
 
     Supports:
+
     - Europe PMC Publication model
     - bio.tools PublicationItem model
     - plain dict-like mappings
 
     Normalized identifiers include (when present):
+
     - DOI
     - PMID
     - PMCID
@@ -126,6 +128,7 @@ def extract_cff_references(
     Extract publication information from CITATION.cff dictionary.
 
     This helper parses an existing CFF structure and returns:
+
     - the list of reference entries, and
     - the preferred-citation entry, if present.
 
@@ -142,6 +145,7 @@ def extract_cff_references(
     -------
     tuple[list[dict[str, Any]], dict[str, Any] | None]
         A tuple of:
+
         - A list of reference dictionaries extracted from the CFF.
         - The preferred-citation dictionary, or ``None`` if not present.
     """

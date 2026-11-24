@@ -47,6 +47,7 @@ class ParsedVersion:
         The kind of version parsed (SEMVER, DATE, INT, RANGE, RAW).
     value : Any
         The parsed value:
+
         - SEMVER: packaging.version.Version
         - DATE  : datetime.date
         - INT   : int
@@ -137,6 +138,7 @@ def _parse_version_label(label: str) -> ParsedVersion:
     Parse a free-text version label into a structured ``ParsedVersion``.
 
     The following formats are recognized, in order:
+
     - Numeric ranges (e.g. "1.0 - 2.0")
     - Dates (YYYY-MM-DD, YYYY.MM.DD, YYYYMMDD)
     - Plain integers

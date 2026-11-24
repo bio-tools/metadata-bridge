@@ -35,13 +35,18 @@ def reconcile_bt_ontop_gh(
     that are missing from GitHub.
 
     Policy:
+
     1. If ``bt_norm`` is ``None`` or empty, bio.tools is treated as silent and
        no issue/pr is proposed. An "unchanged" log entry is emitted.
+
     2. If ``gh_norm`` is ``None`` or empty, all values from ``bt_norm`` are
        considered missing and an issue/pr is proposed with an "added" log entry.
+
     3. If both ``gh_norm`` and ``bt_norm`` are non-empty:
+
        - If all values in ``bt_norm`` are already present in ``gh_norm``,
          no issue/pr is proposed and an "exact" log entry is emitted.
+
        - Otherwise, the set difference ``missing = bt_norm - gh_norm`` is
          passed to ``make_output`` and an "added" log entry is emitted.
 

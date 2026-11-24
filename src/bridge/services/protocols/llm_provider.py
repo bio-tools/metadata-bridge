@@ -11,10 +11,11 @@ class ChatMessage(BaseModel):
     """
     A message in a chat conversation.
 
-    Attributes
+    Parameters
     ----------
     role : Literal["system", "user", "assistant"]
         The role of the message sender. One of:
+
         - "system": Instructions or global context for the LLM assistant.
         - "user": A message from the user.
         - "assistant": A message from the LLM assistant.

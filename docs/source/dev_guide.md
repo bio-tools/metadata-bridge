@@ -1,153 +1,78 @@
 # Developer guide
 
-This guide explains how to set up a local development environment for bridge, 
-run the CLI/API, and maintain code quality using the existing tooling.
+How to set up a development environment, run the bridge locally, and use the project's tooling.
+For branching, PR rules and code style, see [CONTRIBUTING.md](https://github.com/bio-tools/metadata-bridge/blob/dev/CONTRIBUTING.md).
 
+## Set up
 
-## Prepare your environment
-
-You need Python 3.12 (or higher) and Poetry.
-If you don't have Poetry installed, you can install it by following the [instructions](https://python-poetry.org/docs/#installation)
-or by running the following command:
-
-```sh
-pipx install poetry
-```
-
-Clone the repository and enter the project directory:
+You need Python 3.12 or newer, `git`, and [Poetry](https://python-poetry.org/docs/#installation) (e.g. `pipx install poetry`).
 
 ```sh
 git clone https://github.com/bio-tools/metadata-bridge.git
 cd metadata-bridge
-```
-
-## Install dependencies
-
-Create and activate the virtual environment:
-
-```sh
 poetry install
-```
-
-Or install only specific groups:
-
-```bash
-poetry install --with dev  # install development dependencies
-poetry install --with docs  # install documentation dependencies
-```
-
-## Enable pre-commit hooks
-
-Pre-commit is installed automatically with the development dependencies.
-To activate hooks in your local clone:
-
-```bash
-poetry install --with dev
 poetry run pre-commit install --hook-type pre-commit --hook-type pre-push
+cp .env.example .env  # then fill in your tokens
 ```
 
-What happens automatically:
-
-| hook | stage      | description                                                              |
-|------|------------|--------------------------------------------------------------------------|
-| fmt  | pre-commit | Automatically fixes imports, formatting, and lint issues (Ruff + Black)  |
-| lint | pre-push   | Checks that the codebase is clean and properly formatted before pushing. |
-
-You can also run the same checks manually (very much encouraged):
-
-```bash
-poetry run poe [hook]
-```
+`poetry install` installs all dependency groups (runtime, dev and docs).
+The pre-commit hooks run `fmt` before every commit and `lint` before every push.
+See [Configuration](configuration.md) for what goes in `.env`;
+run `bridge` from the project root so it finds the file.
 
 ## Run locally
 
-Before running the API or CLI, make sure to set up the required environment variables.
-You can create a `.env` file in the project root based on the `.env.example` file.
+```sh
+poetry run bridge api         # API with auto-reload, Swagger UI at http://localhost:8000/docs
+poetry run bridge cli --help  # CLI commands
+```
 
-### API
+## Tasks
 
-To run the API server with auto-reload:
+Project tasks are [poethepoet](https://poethepoet.natn.io/) tasks: run them with `poetry run poe <task>`,
+or `poetry run poe` to list them.
+
+| Task                  | What it does                                                                                    |
+|-----------------------|-------------------------------------------------------------------------------------------------|
+| `fmt`                 | Fix imports, lint issues and formatting (Ruff + Black)                                          |
+| `lint`                | Check linting and formatting without changing files (what CI runs)                              |
+| `coverage-report`     | Run the tests with coverage, write an HTML report to `htmlcov/` and open it                     |
+| `cosmic-ray-report`   | Run [Cosmic Ray](https://cosmic-ray.readthedocs.io/) mutation testing and write an HTML report |
+| `gen-biotools-models` | Regenerate the Pydantic models from the bio.tools JSON Schema                                   |
+| `gen-github-models`   | Regenerate the Pydantic models from GitHub's JSON response schemas                              |
+| `gen-diagrams`        | Generate the architecture diagrams for the API reference (needs [D2](https://d2lang.com/))      |
+| `gen-docs`            | Build the Sphinx docs into `docs/build`                                                         |
+
+## Tests
 
 ```sh
-poetry run bridge api
-```
-You can access the Swagger UI at [localhost:8000/docs](http://localhost:8000/docs).
-
-### CLI
-
-To see available commands:
-
-```sh
-poetry run bridge cli --help
+poetry run pytest
 ```
 
-### Helper scripts
+The unit tests in `tests/unit` don't need a `.env` file or any tokens.
 
-Various helper scripts are available under the `scripts/` directory.
-
-| script                | description                                                |
-|-----------------------|------------------------------------------------------------|
-| `gen-biotools-models` | Generate Pydantic models from the bio.tools JSON Schema    |
-| `gen-github-models`   | Generate Pydantic models from GitHub JSON response schemas |
-
-You can run them using Poetry:
-
-```bash
-poetry run poe [script]
-```
-
-Run `poetry run poe` without arguments to list every available task.
+Mutation testing (`cosmic-ray-report`) makes small changes to the code and checks that some test fails for each one,
+which shows where the tests don't really check behaviour. It reruns the test suite for every mutation, so it takes a while.
+Locally it uses `cosmic-ray.local.toml`; with the `CI` environment variable set it uses `cosmic-ray.ci.toml`.
 
 ## Documentation
 
-There are two scripts relevant to documentation generation:
-
-| script                | description                                              |
-|-----------------------|----------------------------------------------------------|
-| `gen-diagrams`        | Generate architecture diagrams used by the documentation |
-| `gen-docs`            | Generate Sphinx documentation                            |
-
-You can run them using Poetry:
-
-```bash
-poetry run poe [script]
+```sh
+poetry run poe gen-diagrams
+poetry run poe gen-docs
+python -m http.server --directory docs/build  # then open http://localhost:8000
 ```
 
-The `gen-diagrams` script requires [D2](https://d2lang.com/) to be installed. 
-You can install it by following their [instructions](https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md).
-
-To view the documentation locally, run:
-
-```bash
-open docs/build/index.html  # on macOS
-python -m http.server --directory docs/build  # any OS
-```
-
-If you run the latter command, you can access the documentation at [localhost:8000](http://localhost:8000).
-
+- Run `gen-diagrams` first, since the API reference includes the diagrams it generates.
+- `gen-docs` treats Sphinx warnings as errors: it lists all of them, then fails, both locally and in CI.
+  Most come from docstrings, for example a list without a blank line before it.
+- The process diagrams are [Mermaid](https://mermaid.js.org/) files in `docs/source/api_reference/_process_diagrams/`.
+  They render in the browser, so editing the `.mmd` file is all it takes.
 
 ## Dependencies
 
-We use Poetry to manage dependencies.
-
-Add runtime dependencies with:
-
-```bash
-poetry add [package]
+```sh
+poetry add <package>               # runtime
+poetry add --group dev <package>   # development
+poetry add --group docs <package>  # documentation
 ```
-
-Add development dependencies with:
-
-```bash
-poetry add --group dev [package]
-```
-
-Add documentation dependencies with:
-
-```bash
-poetry add --group docs [package]
-```
-
-## Contributing guidelines
-
-Please refer to the [CONTRIBUTING.md](https://github.com/bio-tools/metadata-bridge/blob/dev/CONTRIBUTING.md) file for guidelines on contributing to this project.

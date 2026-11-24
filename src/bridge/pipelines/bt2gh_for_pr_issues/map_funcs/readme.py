@@ -142,6 +142,7 @@ def _extract_existing_badges(gh_readme: str | None) -> list[Badge]:
 
     This function scans the README content for Markdown-style badges, both
     with and without links:
+
     - `[![alt](img)](link)` (badge wrapped in a link)
     - `![alt](img)` (image-only badge)
 
@@ -197,11 +198,13 @@ def _extract_project_title(gh_readme: str | None) -> str | None:
 
     This is a best-effort heuristic that tries three common heading styles,
     in order of preference:
+
     1. ATX H1:    '# Title'
     2. Setext H1: 'Title' on one line, followed by '=====' or '-----'
     3. HTML H1:   '<h1>Title</h1>'
 
     The function returns the exact snippet representing the title block:
+
     - For ATX: the full line including '#'.
     - For Setext: the title line plus its underline, separated by a newline.
     - For HTML: the full `<h1>...</h1>` element.
@@ -258,6 +261,7 @@ def _build_readme(
     Construct an updated README from existing content and bio.tools metadata.
 
     Steps performed:
+
     1. Builds a set of new badges:
        - A 'bridge' badge indicating the README was generated/updated by
          the bridge pipeline.
@@ -368,6 +372,7 @@ def map_readme(gh_readme: str | None, bt_params: dict[str, Any]) -> dict[str, st
     Map bio.tools metadata onto a GitHub README and return updated content.
 
     Steps performed:
+
     1. Validates and interprets the required fields are present in `bt_params`.
     2. Calls `_build_readme` to construct a new README that includes:
        - an existing title (if any), or a new one based on `bt_params['name']`,
@@ -383,6 +388,7 @@ def map_readme(gh_readme: str | None, bt_params: dict[str, Any]) -> dict[str, st
     bt_params : dict[str, Any]
         The bio.tools tool metadata as a dictionary.
         Expected fields:
+
         - 'name'       : Name of the tool.
         - 'biotoolsID' : bio.tools identifier of the tool.
         - 'toolType'   : Optional list of tool types (typically `ToolTypeEnum`).

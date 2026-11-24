@@ -56,6 +56,7 @@ def remove_first_snippet_from_text(text: str | None, snippet: str | None) -> str
     string is returned unchanged.
 
     Behaviour:
+
     - If `text` is ``None`` or an empty string, an empty string is returned.
     - If `snippet` is ``None`` or an empty string, `text` is returned unchanged.
     - Only the first match is removed; subsequent occurrences of `snippet`

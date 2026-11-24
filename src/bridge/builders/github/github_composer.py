@@ -23,6 +23,7 @@ async def compose_github_repo(**kwargs) -> GitHubRepoModel:
     ----------
     **kwargs
         Expected to contain:
+
         - owner : str - GitHub user or organization that owns the repository.
         - repo : str - Repository name.
 

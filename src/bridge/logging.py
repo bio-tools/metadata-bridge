@@ -30,24 +30,25 @@ logging.addLevelName(NOTE_LEVEL, "NOTE")
 class BridgeLogger(logging.Logger):
     """
     Logger with extra convenience methods:
-        .conflict(), .exact(), .added(), .note()
+    ``.conflict()``, ``.exact()``, ``.added()``, ``.unchanged()`` and ``.note()``.
 
-    Behaves like a normal logger (msg, *args, **kwargs).
+    Behaves like a normal logger (``msg, *args, **kwargs``).
 
     Event types:
-    - CONFLICT (.conflict()):
+
+    ``CONFLICT`` (``.conflict()``)
         Indicates a conflict between source and target metadata.
         For example, when existing bio.tools metadata differs from GitHub metadata.
-    - EXACT (.exact()):
+    ``EXACT`` (``.exact()``)
         Indicates an exact match between source and target metadata.
         For example, when existing bio.tools metadata matches GitHub metadata.
-    - ADDED (.added()):
+    ``ADDED`` (``.added()``)
         Indicates that new metadata has been added from source to target.
         For example, when GitHub metadata is used to populate missing bio.tools metadata.
-    - UNCHANGED (.unchanged()):
+    ``UNCHANGED`` (``.unchanged()``)
         Indicates that existing metadata remains unchanged.
         For example, when bio.tools metadata is retained as is.
-    - NOTE (.note()):
+    ``NOTE`` (``.note()``)
         General informational messages that do not fit other categories.
     """
 
@@ -153,6 +154,7 @@ def setup_logging(mode: Literal["cli", "api", "package"] = "package"):
     ----------
     mode : Literal["cli", "api", "package"]
         One of: "cli", "api", or "package".
+
         - "cli" - plain text logs (for command-line tools)
         - "api" - json-line logs (for API services)
         - "package" - minimal setup for library use

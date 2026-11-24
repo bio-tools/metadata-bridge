@@ -24,19 +24,13 @@
 {# ---------- PUBLIC INTERFACE ---------- #}
 Public Interface
 ----------------
-This section documents user-facing interface of the ``{{ pkgname }}`` package (as defined in its ``__init__.py`` file).
-
-.. automodapi:: {{ pkgname }}
-   :no-inheritance-diagram:
-   :no-main-docstr:
-   :include-all-objects:
-   :no-heading:
-   :noindex:
-
+This section documents the public interface of the ``{{ pkgname }}`` package (as defined in its ``__init__.py`` file).
+Each object is documented in full on the page of the module that defines it.
 
 .. automodule:: {{ pkgname }}
    :members:
    :show-inheritance:
+   :no-index:
 
 
 
