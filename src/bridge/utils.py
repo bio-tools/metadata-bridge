@@ -2,6 +2,7 @@
 Cross-cutting utilities.
 """
 
+import functools
 import inspect
 from collections.abc import Callable
 from typing import Any
@@ -58,6 +59,7 @@ def require_args(*required):
     """
 
     def decorator(fn):
+        @functools.wraps(fn)
         async def wrapper(**kwargs):
             missing = [r for r in required if r not in kwargs]
             if missing:
