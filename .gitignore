@@ -1,2 +1,45 @@
+schemas/
+
+.env
 .idea/
 
+# Logs
+logs/
+
+# Documentation
+docs/source/api_reference/_apidoc_generated/
+docs/source/api_reference/_architecture_generated/
+docs/source/_generated/
+docs/build/
+
+# macOS
+*.DS_Store
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Grimp cache
+.grimp_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Python
+*.whl
+
+# VSCode
+.vscode
+
+# virtual environments
+.venv/
+poetry.toml
+
+# Tests
+.coverage
+htmlcov/
+cosmic-ray*.sqlite
+cosmic-ray-report*.html
+
+# build output
+dist/

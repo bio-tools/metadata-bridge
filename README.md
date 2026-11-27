@@ -1,17 +1,72 @@
 # Bidirectional bridge: GitHub ⇄ bio.tools
 
-[Biohackathon 2025 project](https://github.com/elixir-europe/biohackathon-projects-2025/blob/main/5.md) 
+[![PyPI](https://img.shields.io/pypi/v/metadata-bridge)](https://pypi.org/project/metadata-bridge/)
+[![Tests](https://github.com/bio-tools/metadata-bridge/actions/workflows/tests.yml/badge.svg?branch=dev)](https://github.com/bio-tools/metadata-bridge/actions/workflows/tests.yml)
+[![Docs](https://github.com/bio-tools/metadata-bridge/actions/workflows/docs.yml/badge.svg?branch=dev)](https://bio-tools.github.io/metadata-bridge/)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](https://github.com/bio-tools/metadata-bridge/blob/dev/LICENSE.txt)
 
-## Abstract
+**Goal**: 
+make software metadata painless. 
+This tool extracts high-quality metadata from GitHub repos 
+to build bio.tools entries
+and uses bio.tools records to propose improvements back to GitHub 
+(badges, descriptions, files). 
+It currently targets GitHub and bio.tools, 
+but the architecture is intentionally pluggable for more backends later.
 
-This project will bidirectionally bridge GitHub and bio.tools by developing metadata tooling that benefits both platforms. This will enable producing high-quality, rich bio.tools entries from the content already in GitHub repositories, with use cases from different communities. The tool will use bio.tools records to suggest improvements to GitHub repositories, including adding missing information and standardized descriptions, for increased compliance with Software Management Plans (SMPs). 
+**Why**:
+- Reduces manual work in software metadata curation.
+- Improves repository visibility and discoverability.
+- Closes the loop: metadata is useful in both directions.
 
-GitHub→bio.tools: the tool will use the GitHub API to extract relevant metadata (tool name, programming languages, license, publications, etc.) from repository files and a novel template. This template will be designed in a lightweight, human-readable format (e.g., a structured section in the README) to easily annotate key fields that are difficult to infer reliably and ensure they are also machine-readable. We will leverage text mining and LLMs to enrich metadata, such as tool descriptions. I/O formats may be inferred from usage information or source code. The approaches will be combined to produce a bio.tools-compatible metadata file. 
-
-bio.tools→GitHub: the tool will use bio.tools metadata to suggest enhancements to GitHub repositories, add badges and excerpts from the functional annotation in bio.tools, and, where possible, automatically submit pull requests with proposed updates.  
-
-This project addresses key barriers to maintaining software metadata and supports FAIR practices by embedding curation directly into existing workflows. By automating metadata extraction, suggestion, and integration, the tool reduces the manual overhead required to FAIRify research software, lowering barriers for researchers to contribute well-annotated, reusable tools.
+**Origin**:
+this project started at the ELIXIR BioHackathon Europe 2025
+([original repository](https://github.com/bio-tools/biohackathon2025)).
 
 ---
+
+## Features
+
+| Direction          | What we do                                                             | Output                    |
+|--------------------|------------------------------------------------------------------------|---------------------------|
+| GitHub → bio.tools | Extract metadata from GitHub repositories                              | JSON bio.tools metadata   |
+| bio.tools → GitHub | Propose improvements to GitHub repositories based on bio.tools records | PR (and optional issues)  |
+
+## Installation
+
+Requires Python 3.12+ and `git` on the `PATH`.
+
+```bash
+pip install metadata-bridge
+```
+
+Set `GITHUB_TOKEN` (and `HUGGINGFACE_TOKEN` for LLM-generated descriptions) in your environment or a `.env` file,
+as described in [Configuration](https://bio-tools.github.io/metadata-bridge/configuration.html).
+
+## Usage
+
+```bash
+# GitHub -> bio.tools: print bio.tools metadata for a repo
+bridge cli github-to-biotools extract OWNER REPO
+
+# bio.tools -> GitHub: open a PR with improvements from a bio.tools entry
+bridge cli biotools-to-github update BIOTOOLS_ID OWNER REPO
+```
+
+The [documentation](https://bio-tools.github.io/metadata-bridge/) covers the REST API, Python usage,
+running it with Docker, and what gets mapped in each direction.
+
+## Contributing
+
+Contributions are welcome!
+See [CONTRIBUTING](https://github.com/bio-tools/metadata-bridge/blob/dev/CONTRIBUTING.md) for branching, PR rules and code style,
+and the [Developer guide](https://bio-tools.github.io/metadata-bridge/dev_guide.html) for setup and tooling.
+
+## Citing
+
+If you use this tool, please cite it using the metadata in [CITATION.cff](https://github.com/bio-tools/metadata-bridge/blob/dev/CITATION.cff)
+(GitHub's "Cite this repository" button uses it too).
+
 ## License
-This project is licensed under Apache 2.0. See the [LICENSE](LICENSE.txt) file for details.
+
+This project is licensed under Apache 2.0. See the [LICENSE](https://github.com/bio-tools/metadata-bridge/blob/dev/LICENSE.txt) file for details.
